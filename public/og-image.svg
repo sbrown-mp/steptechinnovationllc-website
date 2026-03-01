@@ -1,0 +1,39 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#020617"/>
+      <stop offset="0.5" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#0C4A6E"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(230 150) rotate(32.9) scale(340 250)">
+      <stop stop-color="#2DD4BF" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 90) rotate(120.6) scale(280 220)">
+      <stop stop-color="#38BDF8" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <g opacity="0.18">
+    <path d="M0 118H1200" stroke="#94A3B8"/>
+    <path d="M0 178H1200" stroke="#94A3B8"/>
+    <path d="M0 238H1200" stroke="#94A3B8"/>
+    <path d="M0 298H1200" stroke="#94A3B8"/>
+    <path d="M0 358H1200" stroke="#94A3B8"/>
+    <path d="M0 418H1200" stroke="#94A3B8"/>
+    <path d="M0 478H1200" stroke="#94A3B8"/>
+    <path d="M0 538H1200" stroke="#94A3B8"/>
+  </g>
+  <text x="88" y="246" fill="#E2E8F0" font-size="68" font-family="'Arial',sans-serif" font-weight="700">
+    Steptech Innovation LLC
+  </text>
+  <text x="88" y="322" fill="#BAE6FD" font-size="42" font-family="'Arial',sans-serif" font-weight="600">
+    Business Technology Solutions
+  </text>
+  <text x="88" y="380" fill="#CBD5E1" font-size="30" font-family="'Arial',sans-serif" font-weight="400">
+    Reduce admin labor • Fix scheduling chaos • Speed up collections
+  </text>
+</svg>
