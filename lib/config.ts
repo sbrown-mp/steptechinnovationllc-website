@@ -24,7 +24,6 @@ export interface SiteConfig {
   phone: string;
   email: string;
   serviceAreas: string[];
-  calendlyUrl: string;
   auditPrice: number;
   packages: ServicePackage[];
 }
@@ -37,7 +36,6 @@ export const siteConfig: SiteConfig = {
   phone: process.env.NEXT_PUBLIC_PHONE ?? "+1 (863) 555-0147",
   email: process.env.NEXT_PUBLIC_EMAIL ?? "hello@steptechinnovation.com",
   serviceAreas: ["Winter Haven", "Orlando", "Tampa"],
-  calendlyUrl: process.env.NEXT_PUBLIC_CALENDLY_URL ?? "https://calendly.com/your-handle/workflow-audit",
   auditPrice: Number.isFinite(envAuditPrice) ? envAuditPrice : defaultAuditPrice,
   packages: [
     {

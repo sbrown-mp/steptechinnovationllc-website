@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
-const XANO_AUDIT_REQUEST_URL = "https://xbig-qtfl-ubwf.n7c.xano.io/api:4IQXh2tu/audit_request_form";
-
 interface AuditRequestBody {
   name?: string;
   email?: string;
@@ -28,6 +26,19 @@ const toTrimmed = (value: unknown): string => (typeof value === "string" ? value
 
 export async function POST(request: Request) {
   try {
+    const xanoAuditRequestUrl = process.env.XANO_AUDIT_REQUEST_URL?.trim();
+    if (!xanoAuditRequestUrl) {
+      console.error("[audit-request-config-error] Missing XANO_AUDIT_REQUEST_URL");
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Server configuration error.",
+        },
+        { status: 500 },
+      );
+    }
+
     const json = (await request.json()) as AuditRequestBody;
 
     const missingFields = REQUIRED_FIELDS.filter((field) => !toTrimmed(json[field]));
@@ -61,7 +72,7 @@ export async function POST(request: Request) {
       headers.Authorization = `Bearer ${process.env.XANO_API_KEY.trim()}`;
     }
 
-    const xanoResponse = await fetch(XANO_AUDIT_REQUEST_URL, {
+    const xanoResponse = await fetch(xanoAuditRequestUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(payload),

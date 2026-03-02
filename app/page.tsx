@@ -8,7 +8,6 @@ import { PainPoints } from "@/components/PainPoints";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Testimonials } from "@/components/Testimonials";
 import { Container } from "@/components/Container";
-import { siteConfig } from "@/lib/config";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -37,7 +36,7 @@ export default function HomePage() {
               Get a Workflow Audit and a practical system build plan you can act on immediately.
             </h2>
             <p className="mt-4 max-w-3xl text-slate-200">
-              We'll identify the highest-impact system upgrade, estimate ROI, and map delivery milestones so you know
+              We&apos;ll identify the highest-impact system upgrade, estimate ROI, and map delivery milestones so you know
               exactly what to build first.
             </p>
             <p className="mt-3 text-sm text-slate-300">
@@ -48,15 +47,10 @@ export default function HomePage() {
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <a
-                href={siteConfig.calendlyUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-secondary w-full sm:w-auto"
-              >
+              <Link href="/book-audit" className="btn-secondary w-full sm:w-auto">
                 Book a 15-minute Call
                 <CalendarClock className="ml-2 h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </Container>

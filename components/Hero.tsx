@@ -43,10 +43,10 @@ export function Hero() {
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
-              <a href={siteConfig.calendlyUrl} target="_blank" rel="noreferrer" className="btn-secondary w-full sm:w-auto">
+              <Link href="/book-audit" className="btn-secondary w-full sm:w-auto">
                 Book a 15-minute Call
                 <CalendarDays className="ml-2 h-4 w-4" />
-              </a>
+              </Link>
             </div>
 
             <p className="mt-6 inline-flex items-center gap-2 text-sm text-cyan-100/80">

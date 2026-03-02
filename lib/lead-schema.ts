@@ -12,7 +12,8 @@ export const leadBaseSchema = z.object({
   primaryImprovement: z.string().min(2, "Please select what you are primarily looking to improve.").optional(),
   biggestBottleneck: z
     .string()
-    .min(12, "Please share your biggest operational bottleneck."),
+    .trim()
+    .min(1, "Please share your biggest operational bottleneck."),
   currentTools: z.string().max(500, "Please keep this under 500 characters.").optional(),
 });
 
