@@ -1,8 +1,9 @@
-import { parseISO } from "date-fns";
+﻿import { parseISO } from "date-fns";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { BOOKING_BUFFER_MINUTES, hasBusyConflict, isBookingWindowValid } from "@/lib/booking";
-import { createEvent, getBusyTimes } from "@/lib/googleCalendar";
+import { createDailyRoom } from "@/lib/daily";
+import { createEvent, getBusyTimes, updateEventDescription } from "@/lib/googleCalendar";
 
 export const runtime = "nodejs";
 const DEFAULT_BOOKING_TIMEZONE = process.env.BOOKING_TIMEZONE?.trim() || "America/New_York";
@@ -22,15 +23,20 @@ const bookingCreateSchema = z.object({
   phone: z.string().trim().min(1, "Phone is required."),
   business_name: z.string().trim().optional().default(""),
   industry: z.string().trim().optional().default(""),
-  service_type: z.string().trim().min(1, "Service type is required."),
+  service_type: z.string().trim().min(1, "Selection is required."),
   notes: z.string().trim().optional().default(""),
   start: z.string().trim().min(1, "Start time is required."),
   end: z.string().trim().min(1, "End time is required."),
   timezone: z.string().trim().optional().default(""),
 });
 
-const formatEventDescription = (payload: z.infer<typeof bookingCreateSchema>) => {
+const formatEventDescription = (
+  payload: z.infer<typeof bookingCreateSchema>,
+  participantUrl?: string,
+): string => {
   return [
+    participantUrl ? `Video meeting: ${participantUrl}` : "Video meeting: Pending setup",
+    "",
     "Steptech Free System Audit Booking",
     "",
     `Name: ${payload.name}`,
@@ -38,12 +44,32 @@ const formatEventDescription = (payload: z.infer<typeof bookingCreateSchema>) =>
     `Phone: ${payload.phone}`,
     `Business Name: ${payload.business_name || "N/A"}`,
     `Industry: ${payload.industry || "N/A"}`,
-    `Service Type: ${payload.service_type}`,
+    `What are you primarily looking to improve?: ${payload.service_type}`,
     `Notes: ${payload.notes || "N/A"}`,
     `Submitted Timezone: ${payload.timezone || "N/A"}`,
     `Booking Start: ${payload.start}`,
     `Booking End: ${payload.end}`,
   ].join("\n");
+};
+
+const shouldTryXanoFallback = (status: number, responseText: string): boolean => {
+  if (status !== 400 && status !== 422) {
+    return false;
+  }
+
+  const lower = responseText.toLowerCase();
+  return (
+    lower.includes("unknown") ||
+    lower.includes("unexpected") ||
+    lower.includes("not allowed") ||
+    lower.includes("invalid") ||
+    lower.includes("schema")
+  );
+};
+
+const withDailyLinkInNotes = (notes: string, participantUrl: string, roomName: string): string => {
+  const segments = [notes.trim(), `Daily participant link: ${participantUrl}`, `Daily room: ${roomName}`].filter(Boolean);
+  return segments.join("\n");
 };
 
 export async function POST(request: Request) {
@@ -123,7 +149,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const eventTitle = `Free System Audit — ${payload.business_name || payload.name}`;
+    const eventTitle = `Free System Audit - ${payload.business_name || payload.name}`;
     const eventDescription = formatEventDescription({
       ...payload,
       timezone: submittedTimeZone,
@@ -140,7 +166,7 @@ export async function POST(request: Request) {
 
     const googleEventId = createdEvent.id?.trim();
     if (!googleEventId) {
-      console.error("[booking-google-create-error] Missing event ID from Google Calendar.", createdEvent);
+      console.error("[booking-google-create-error] Missing event ID from Google Calendar.");
       return NextResponse.json(
         {
           message: "Unable to confirm booking at this time. Please try again.",
@@ -149,11 +175,31 @@ export async function POST(request: Request) {
       );
     }
 
+    const dailyMeeting = await createDailyRoom({
+      bookingStartISO: payload.start,
+      bookingEndISO: payload.end,
+      bookingId: googleEventId,
+      clientEmail: payload.email,
+    });
+
+    const updatedEventDescription = formatEventDescription(
+      {
+        ...payload,
+        timezone: submittedTimeZone,
+      },
+      dailyMeeting.participantUrl,
+    );
+
+    await updateEventDescription({
+      eventId: googleEventId,
+      description: updatedEventDescription,
+    });
+
     const xanoEndpoint = process.env.XANO_BOOKING_ENDPOINT?.trim();
     if (!xanoEndpoint) {
       console.error("[booking-xano-config-error] Missing XANO_BOOKING_ENDPOINT.");
     } else {
-      const xanoPayload = {
+      const baseXanoPayload = {
         name: payload.name,
         email: payload.email,
         phone: payload.phone,
@@ -171,6 +217,13 @@ export async function POST(request: Request) {
         created_date: new Date().toISOString(),
       };
 
+      const xanoPayload = {
+        ...baseXanoPayload,
+        daily_room_name: dailyMeeting.roomName,
+        daily_participant_url: dailyMeeting.participantUrl,
+        daily_host_url: dailyMeeting.hostUrl,
+      };
+
       try {
         const xanoResponse = await fetch(xanoEndpoint, {
           method: "POST",
@@ -183,10 +236,40 @@ export async function POST(request: Request) {
 
         if (!xanoResponse.ok) {
           const xanoErrorText = await xanoResponse.text();
-          console.error("[booking-xano-error]", {
-            status: xanoResponse.status,
-            body: xanoErrorText,
-          });
+          const shouldFallback = shouldTryXanoFallback(xanoResponse.status, xanoErrorText);
+
+          if (shouldFallback) {
+            const fallbackPayload = {
+              ...baseXanoPayload,
+              notes: withDailyLinkInNotes(payload.notes, dailyMeeting.participantUrl, dailyMeeting.roomName),
+            };
+
+            const fallbackResponse = await fetch(xanoEndpoint, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(fallbackPayload),
+              cache: "no-store",
+            });
+
+            if (!fallbackResponse.ok) {
+              const fallbackErrorText = await fallbackResponse.text();
+              console.error("[booking-xano-fallback-error]", {
+                status: fallbackResponse.status,
+                body: fallbackErrorText,
+              });
+            } else {
+              console.warn(
+                "[booking-xano-fallback-warning] Daily-specific fields rejected. Stored participant link in notes instead.",
+              );
+            }
+          } else {
+            console.error("[booking-xano-error]", {
+              status: xanoResponse.status,
+              body: xanoErrorText,
+            });
+          }
         }
       } catch (xanoError) {
         console.error("[booking-xano-network-error]", xanoError);
@@ -198,6 +281,8 @@ export async function POST(request: Request) {
       start: payload.start,
       end: payload.end,
       google_event_id: googleEventId,
+      daily_room_name: dailyMeeting.roomName,
+      daily_participant_url: dailyMeeting.participantUrl,
     });
   } catch (error) {
     console.error("[booking-create-error]", error);

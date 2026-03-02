@@ -106,3 +106,22 @@ export const createEvent = async (
 
   return response.data;
 };
+
+export interface UpdateCalendarEventDescriptionInput {
+  eventId: string;
+  description: string;
+}
+
+export const updateEventDescription = async (input: UpdateCalendarEventDescriptionInput): Promise<void> => {
+  const calendarId = process.env.GOOGLE_CALENDAR_ID?.trim() || "primary";
+  const calendar = getCalendarClient();
+
+  await calendar.events.patch({
+    calendarId,
+    eventId: input.eventId,
+    sendUpdates: "all",
+    requestBody: {
+      description: input.description,
+    },
+  });
+};

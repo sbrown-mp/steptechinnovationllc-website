@@ -30,7 +30,34 @@ GOOGLE_CALENDAR_ID=primary
 # Fallback only; booking UI defaults to user's device timezone and allows timezone selection
 BOOKING_TIMEZONE=America/New_York
 XANO_BOOKING_ENDPOINT=https://your-xano-instance.xano.io/api:your-token/steptech_calendar_bookings
+
+# Daily.co video meetings
+DAILY_API_KEY=
+DAILY_DOMAIN=your-team.daily.co
+# Optional override if needed
+DAILY_API_BASE=https://api.daily.co/v1
+# Optional: room expiration offset from booking end time
+DAILY_ROOM_TTL_SECONDS=86400
+# Optional: private recommended
+DAILY_ROOM_PRIVACY=private
 ```
+
+Notes:
+- Booking creation now generates Daily host + participant meeting links server-side.
+- Only the participant link is returned to the client UI.
+- The participant link is added to Google Calendar event details and sent to the attendee via Google invite updates.
+- Xano payload includes `daily_room_name`, `daily_participant_url`, and `daily_host_url`.
+- If Xano rejects those Daily fields, the booking route retries by storing the participant link in `notes`.
+
+## Booking Manual Verification Checklist
+
+- Submit a booking and confirm a Google Calendar event is created.
+- Confirm a Daily room is created and both host/participant links exist server-side.
+- Confirm the Google Calendar event description contains `Video meeting: <participant-link>`.
+- Confirm attendee invite email includes the participant link from event description.
+- Confirm Xano record contains `daily_room_name`, `daily_participant_url`, and `daily_host_url`.
+- If Xano schema rejects Daily fields, confirm fallback stores participant link in `notes`.
+- Confirm no secrets are committed (`.env.local` stays untracked, `.env.example` contains placeholders only).
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

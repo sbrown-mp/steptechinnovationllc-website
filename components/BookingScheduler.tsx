@@ -20,6 +20,7 @@ interface BookingSuccess {
   start: string;
   end: string;
   googleEventId: string;
+  participantUrl?: string;
 }
 
 const commonTimeZones = [
@@ -38,7 +39,17 @@ const serviceTypeOptions = [
   "Replace or consolidate existing software",
   "Workflow automation",
   "Hardware-integrated systems",
-  "Need guidance",
+  "Not sure - need guidance",
+];
+
+const industryOptions = [
+  "HVAC",
+  "Plumbing",
+  "Electrical",
+  "Home Health Agency",
+  "Property Management",
+  "Construction",
+  "Other Service Business",
 ];
 
 const slotTemplate = Array.from({ length: 16 }, (_, index) => {
@@ -229,8 +240,14 @@ export function BookingScheduler({ defaultTimeZone }: BookingSchedulerProps) {
         }),
       });
 
-      const payload: { ok?: boolean; message?: string; start?: string; end?: string; google_event_id?: string } =
-        await response.json();
+      const payload: {
+        ok?: boolean;
+        message?: string;
+        start?: string;
+        end?: string;
+        google_event_id?: string;
+        daily_participant_url?: string;
+      } = await response.json();
 
       if (response.status === 409) {
         setSubmitError(payload.message ?? "This slot was just booked. Please choose another.");
@@ -248,6 +265,7 @@ export function BookingScheduler({ defaultTimeZone }: BookingSchedulerProps) {
         start: payload.start,
         end: payload.end,
         googleEventId: payload.google_event_id,
+        participantUrl: payload.daily_participant_url,
       });
     } catch {
       setSubmitError("Network error. Please try again.");
@@ -295,6 +313,19 @@ export function BookingScheduler({ defaultTimeZone }: BookingSchedulerProps) {
             {formattedStart} - {formattedEnd} ({selectedTimeZone})
           </p>
           <p className="mt-2 text-emerald-200/90">Confirmation ID: {success.googleEventId}</p>
+          {success.participantUrl ? (
+            <p className="mt-3">
+              Join your video meeting:{" "}
+              <a
+                href={success.participantUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-emerald-100 underline decoration-emerald-200/70 underline-offset-2"
+              >
+                {success.participantUrl}
+              </a>
+            </p>
+          ) : null}
         </div>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -492,7 +523,7 @@ export function BookingScheduler({ defaultTimeZone }: BookingSchedulerProps) {
             </label>
 
             <label className="text-sm font-medium text-slate-200">
-              Service Type <span className="text-rose-300">*</span>
+              What are you primarily looking to improve? <span className="text-rose-300">*</span>
               <select
                 value={serviceType}
                 onChange={(event) => setServiceType(event.target.value)}
@@ -523,7 +554,14 @@ export function BookingScheduler({ defaultTimeZone }: BookingSchedulerProps) {
 
             <label className="text-sm font-medium text-slate-200">
               Industry (optional)
-              <input value={industry} onChange={(event) => setIndustry(event.target.value)} type="text" className={fieldClass} />
+              <select value={industry} onChange={(event) => setIndustry(event.target.value)} className={cn(fieldClass, "pr-10")}>
+                <option value="">Select your industry</option>
+                {industryOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             </label>
           </div>
 
