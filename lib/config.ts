@@ -33,7 +33,7 @@ const envAuditPrice = Number.parseInt(process.env.NEXT_PUBLIC_AUDIT_PRICE ?? "",
 
 export const siteConfig: SiteConfig = {
   companyName: "Steptech Innovation LLC",
-  phone: process.env.NEXT_PUBLIC_PHONE ?? "+1 (863) 555-0147",
+  phone: process.env.NEXT_PUBLIC_PHONE ?? "+1 (863) 356-8603",
   email: process.env.NEXT_PUBLIC_EMAIL ?? "hello@steptechinnovation.com",
   serviceAreas: ["Winter Haven", "Orlando", "Tampa"],
   auditPrice: Number.isFinite(envAuditPrice) ? envAuditPrice : defaultAuditPrice,
