@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { Container } from "@/components/Container";
 
@@ -42,10 +42,6 @@ export function Hero() {
               <Link href="/audit" className="btn-primary w-full sm:w-auto">
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-              <Link href="/book-audit" className="btn-secondary w-full sm:w-auto">
-                Book a 15-minute Call
-                <CalendarDays className="ml-2 h-4 w-4" />
               </Link>
             </div>
 

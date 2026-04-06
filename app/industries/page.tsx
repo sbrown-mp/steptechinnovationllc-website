@@ -42,6 +42,12 @@ const industryCards = [
     pain: "Coordination bottlenecks, paperwork lag, and delayed billing cycles.",
     outcome: "Structured workflows for job updates, approvals, and invoicing acceleration.",
   },
+  {
+    name: "Real Estate and Land Operations",
+    pain: "Fragmented property data, slow asset evaluation, document-heavy workflows, and limited visibility across land, projects, and field operations.",
+    outcome:
+      "Centralized operational visibility, faster property and asset evaluation, structured document workflows, and stronger decision-making across real estate and land operations.",
+  },
 ];
 
 export default function IndustriesPage() {
@@ -59,7 +65,12 @@ export default function IndustriesPage() {
 
         <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {industryCards.map((industry) => (
-            <article key={industry.name} className="glass-card h-full p-6">
+            <article
+              key={industry.name}
+              className={`glass-card h-full p-6 ${
+                industry.name === "Real Estate and Land Operations" ? "md:col-span-2 xl:col-span-3" : ""
+              }`}
+            >
               <h2 className="text-2xl font-semibold text-white">{industry.name}</h2>
               <p className="mt-4 text-sm text-slate-300">
                 <span className="font-semibold text-slate-100">Common pain:</span> {industry.pain}

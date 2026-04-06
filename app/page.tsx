@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CalendarClock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CredibilityStrip } from "@/components/CredibilityStrip";
 import { FAQ } from "@/components/FAQ";
 import { Hero } from "@/components/Hero";
@@ -46,10 +46,6 @@ export default function HomePage() {
               <Link href="/audit" className="btn-primary w-full sm:w-auto">
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-              <Link href="/book-audit" className="btn-secondary w-full sm:w-auto">
-                Book a 15-minute Call
-                <CalendarClock className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>

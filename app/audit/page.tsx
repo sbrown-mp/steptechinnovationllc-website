@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BarChart3, ClipboardList, DollarSign, MoveRight } from "lucide-react";
+import { BarChart3, ClipboardList, DollarSign } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { Container } from "@/components/Container";
 import { Reveal } from "@/components/Reveal";
@@ -49,10 +49,6 @@ export default function AuditPage() {
               </p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <a href="/book-audit" className="btn-primary w-full sm:w-auto">
-                  Book Free Audit Call
-                  <MoveRight className="ml-2 h-4 w-4" />
-                </a>
                 <a href="#request-audit" className="btn-secondary w-full sm:w-auto">
                   Request Free Audit
                 </a>
