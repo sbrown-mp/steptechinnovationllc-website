@@ -79,7 +79,7 @@ export default function AuditPage() {
               inquiryType="audit"
               sourcePage="/audit"
               submitLabel="Request Free Audit"
-              successMessage="Audit request received. We will reach out within one business day to confirm your call."
+              successMessage="Form submitted successfully. We will reach out within one business day. Redirecting you to the home page..."
             />
           </section>
         </div>

@@ -56,24 +56,8 @@ export function ContactForm({ inquiryType, sourcePage, submitLabel, successMessa
     },
   });
 
-  const redirectAfterAuditSubmission = async () => {
-    const fallbackUrl = process.env.NEXT_PUBLIC_BOOKING_URL?.trim();
-
-    const hasBookAuditRoute = await fetch("/book-audit", {
-      method: "HEAD",
-      cache: "no-store",
-    })
-      .then((response) => response.ok)
-      .catch(() => false);
-
-    if (hasBookAuditRoute) {
-      window.location.assign("/book-audit");
-      return;
-    }
-
-    if (fallbackUrl) {
-      window.location.assign(fallbackUrl);
-    }
+  const redirectAfterAuditSubmission = () => {
+    window.location.assign("/");
   };
 
   const onSubmit = handleSubmit(async (values) => {
@@ -120,8 +104,8 @@ export function ContactForm({ inquiryType, sourcePage, submitLabel, successMessa
 
       if (inquiryType === "audit") {
         window.setTimeout(() => {
-          void redirectAfterAuditSubmission();
-        }, 800);
+          redirectAfterAuditSubmission();
+        }, 1400);
       }
     } catch {
       setServerError("Network error. Please try again, or call us directly.");
