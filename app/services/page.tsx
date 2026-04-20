@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
 import { Container } from "@/components/Container";
 import { Packages } from "@/components/Packages";
+import { siteConfig } from "@/lib/config";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -83,6 +84,8 @@ const serviceDetails = [
   },
 ];
 
+const sanitizePhone = (phone: string): string => phone.replace(/[^+\d]/g, "");
+
 export default function ServicesPage() {
   return (
     <main>
@@ -140,10 +143,16 @@ export default function ServicesPage() {
           <div className="glass-card mt-10 p-7">
             <h2 className="text-2xl font-semibold text-white">Start with a Workflow Audit</h2>
             <p className="mt-3 text-slate-200">We will identify which package creates the fastest measurable impact for your team.</p>
-            <Link href="/audit" className="btn-primary mt-6">
-              Get Workflow Audit
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="/audit" className="btn-primary w-full sm:w-auto">
+                Get Workflow Audit
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <a href={`tel:${sanitizePhone(siteConfig.phone)}`} className="btn-secondary w-full sm:w-auto">
+                Call Now
+                <Phone className="ml-2 h-4 w-4" />
+              </a>
+            </div>
           </div>
         </Container>
       </section>

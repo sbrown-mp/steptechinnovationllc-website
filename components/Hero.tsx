@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, Phone } from "lucide-react";
 import { siteConfig } from "@/lib/config";
 import { Container } from "@/components/Container";
+
+const sanitizePhone = (phone: string): string => phone.replace(/[^+\d]/g, "");
 
 export function Hero() {
   const reducedMotion = useReducedMotion();
@@ -43,6 +45,10 @@ export function Hero() {
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
+              <a href={`tel:${sanitizePhone(siteConfig.phone)}`} className="btn-secondary w-full sm:w-auto">
+                Call Now
+                <Phone className="ml-2 h-4 w-4" />
+              </a>
             </div>
 
             <p className="mt-6 inline-flex items-center gap-2 text-sm text-cyan-100/80">

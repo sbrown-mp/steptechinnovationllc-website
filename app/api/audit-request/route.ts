@@ -24,6 +24,64 @@ const REQUIRED_FIELDS: Array<keyof AuditRequestBody> = [
 
 const toTrimmed = (value: unknown): string => (typeof value === "string" ? value.trim() : "");
 
+const sendAuditNotificationEmail = async (payload: {
+  name: string;
+  email: string;
+  phone: string;
+  business_name: string;
+  industry: string;
+  service_type: string;
+  biggest_bottleneck: string;
+  current_tools: string;
+  created_date: string;
+}) => {
+  const resendApiKey = process.env.RESEND_API_KEY?.trim();
+  if (!resendApiKey) {
+    console.error("[audit-request-resend-config-error] Missing RESEND_API_KEY");
+    return;
+  }
+
+  const fromEmail = process.env.RESEND_FROM_EMAIL?.trim() || "Steptech Audit <onboarding@resend.dev>";
+
+  const text = [
+    "New Free System Audit Request",
+    "",
+    `Name: ${payload.name}`,
+    `Email: ${payload.email}`,
+    `Phone: ${payload.phone}`,
+    `Business Name: ${payload.business_name || "(not provided)"}`,
+    `Industry: ${payload.industry}`,
+    `Primary Improvement: ${payload.service_type}`,
+    `Biggest Bottleneck: ${payload.biggest_bottleneck}`,
+    `Current Tools: ${payload.current_tools || "(not provided)"}`,
+    `Submitted At (UTC): ${payload.created_date}`,
+  ].join("\n");
+
+  const emailResponse = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${resendApiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: fromEmail,
+      to: ["sbrown@steptechinnovation.com"],
+      subject: "New Free System Audit Request",
+      text,
+      reply_to: payload.email,
+    }),
+    cache: "no-store",
+  });
+
+  if (!emailResponse.ok) {
+    const responseText = await emailResponse.text();
+    console.error("[audit-request-resend-error]", {
+      status: emailResponse.status,
+      body: responseText,
+    });
+  }
+};
+
 export async function POST(request: Request) {
   try {
     const xanoAuditRequestUrl = process.env.XANO_AUDIT_REQUEST_URL?.trim();
@@ -94,6 +152,8 @@ export async function POST(request: Request) {
         { status: 502 },
       );
     }
+
+    await sendAuditNotificationEmail(payload);
 
     return NextResponse.json({
       success: true,

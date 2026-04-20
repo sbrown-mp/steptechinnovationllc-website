@@ -109,3 +109,209 @@ a {
     scroll-behavior: auto !important;
   }
 }
+
+.flyer-sheet {
+  width: 8.5in;
+  min-height: 11in;
+  max-width: calc(100vw - 1.5rem);
+}
+
+.flyer-page,
+.flyer-page h1,
+.flyer-page h2,
+.flyer-page h3,
+.flyer-page h4,
+.flyer-page h5,
+.flyer-page h6,
+.flyer-page p,
+.flyer-page li,
+.flyer-page a,
+.flyer-page span {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+
+body:has(.flyer-page) .site-chrome {
+  display: none !important;
+}
+
+body:has(.flyer-page) .floating-call-button {
+  display: none !important;
+}
+
+@page {
+  size: Letter portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #020617 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  .flyer-print-page {
+    width: 8.5in;
+    min-height: 11in;
+    padding: 0.25in;
+    display: flex;
+    flex-direction: column;
+    color: #e2e8f0;
+    background:
+      radial-gradient(circle at 15% 8%, rgba(45, 212, 191, 0.2), transparent 32%),
+      radial-gradient(circle at 85% 6%, rgba(56, 189, 248, 0.22), transparent 36%),
+      linear-gradient(180deg, #020617 0%, #0b1120 100%);
+    font-family: var(--font-body), sans-serif;
+  }
+
+  .flyer-print-card {
+    border: 1px solid rgba(125, 211, 252, 0.3);
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.95);
+    padding: 0.12in;
+    margin-top: 0.08in;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .flyer-print-header {
+    margin-top: 0;
+  }
+
+  .flyer-print-main {
+    display: grid;
+    gap: 0.08in;
+  }
+
+  .flyer-print-eyebrow {
+    display: inline-block;
+    margin: 0 0 0.08in 0;
+    border: 1px solid rgba(125, 211, 252, 0.35);
+    border-radius: 999px;
+    padding: 0.02in 0.08in;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a5f3fc;
+  }
+
+  .flyer-print-title {
+    margin: 0;
+    font-family: var(--font-heading), sans-serif;
+    font-size: 37px;
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .flyer-print-subtitle {
+    margin: 0.07in 0 0;
+    font-size: 14px;
+    line-height: 1.25;
+    color: #dbeafe;
+  }
+
+  .flyer-print-section {
+    margin-top: 0.08in;
+  }
+
+  .flyer-print-section-title {
+    margin: 0 0 0.06in;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #a5f3fc;
+  }
+
+  .flyer-print-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.08in;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .flyer-print-price {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a5f3fc;
+  }
+
+  .flyer-print-card-title {
+    margin: 0.03in 0 0;
+    font-family: var(--font-heading), sans-serif;
+    font-size: 22px;
+    line-height: 1.15;
+    color: #ffffff;
+  }
+
+  .flyer-print-copy {
+    margin: 0.05in 0 0;
+    font-size: 14px;
+    line-height: 1.24;
+    color: #e2e8f0;
+  }
+
+  .flyer-print-copy-stack p {
+    margin: 0 0 0.03in;
+    font-size: 14px;
+    line-height: 1.24;
+    color: #e2e8f0;
+  }
+
+  .flyer-print-list {
+    margin: 0.05in 0 0;
+    padding-left: 0.16in;
+  }
+
+  .flyer-print-list li {
+    margin: 0 0 0.02in;
+    font-size: 14px;
+    line-height: 1.22;
+    color: #e2e8f0;
+  }
+
+  .flyer-print-checklist {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .flyer-print-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.05in;
+  }
+
+  .flyer-print-checklist-item svg {
+    margin-top: 0.01in;
+    width: 12px;
+    height: 12px;
+  }
+
+  .flyer-print-checklist-item span {
+    flex: 1;
+  }
+
+  .flyer-print-cta {
+    margin-top: auto;
+  }
+
+  .flyer-print-meta {
+    margin: 0.04in 0 0;
+    font-size: 13px;
+    line-height: 1.22;
+    color: #cbd5e1;
+  }
+}

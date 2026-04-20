@@ -62,9 +62,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${headingFont.variable} ${bodyFont.variable} antialiased`}>
-        <Navbar />
+        <div className="site-chrome">
+          <Navbar />
+        </div>
         {children}
-        <Footer />
+        <div className="site-chrome">
+          <Footer />
+        </div>
         <MobileCallButton />
       </body>
     </html>

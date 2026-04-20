@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCheck } from "lucide-react";
+import { ArrowRight, CheckCheck, Phone } from "lucide-react";
 import { Container } from "@/components/Container";
+import { siteConfig } from "@/lib/config";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -17,6 +18,8 @@ const principles = [
   "Ship quickly with measurable milestones",
   "Build secure, maintainable foundations",
 ];
+
+const sanitizePhone = (phone: string): string => phone.replace(/[^+\d]/g, "");
 
 export default function AboutPage() {
   return (
@@ -60,10 +63,16 @@ export default function AboutPage() {
             <p className="mt-3 text-slate-200">
               Start with a Workflow Audit so we can map your operation and define the fastest path to measurable gains.
             </p>
-            <Link href="/audit" className="btn-primary mt-6">
-              Get Workflow Audit
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="/audit" className="btn-primary w-full sm:w-auto">
+                Get Workflow Audit
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <a href={`tel:${sanitizePhone(siteConfig.phone)}`} className="btn-secondary w-full sm:w-auto">
+                Call Now
+                <Phone className="ml-2 h-4 w-4" />
+              </a>
+            </div>
           </section>
         </div>
       </Container>

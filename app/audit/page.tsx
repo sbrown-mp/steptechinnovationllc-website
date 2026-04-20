@@ -39,8 +39,7 @@ export default function AuditPage() {
         <div className="mx-auto max-w-5xl space-y-10">
           <Reveal>
             <section className="glass-card p-8 md:p-10">
-              <p className="eyebrow">Main CTA destination</p>
-              <h1 className="mt-5 text-4xl font-semibold leading-tight text-white md:text-5xl">
+              <h1 className="text-4xl font-semibold leading-tight text-white md:text-5xl">
                 Free System Audit for businesses ready to eliminate inefficiencies and regain operational control.
               </h1>
               <p className="mt-5 max-w-3xl text-lg text-slate-200">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { CredibilityStrip } from "@/components/CredibilityStrip";
 import { FAQ } from "@/components/FAQ";
 import { Hero } from "@/components/Hero";
@@ -8,6 +8,7 @@ import { PainPoints } from "@/components/PainPoints";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { Testimonials } from "@/components/Testimonials";
 import { Container } from "@/components/Container";
+import { siteConfig } from "@/lib/config";
 import { createPageMetadata } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
@@ -16,6 +17,8 @@ export const metadata = createPageMetadata({
     "Steptech Innovation LLC helps Florida service businesses reduce admin labor, improve scheduling, and speed up collections.",
   path: "/",
 });
+
+const sanitizePhone = (phone: string): string => phone.replace(/[^+\d]/g, "");
 
 export default function HomePage() {
   return (
@@ -47,6 +50,10 @@ export default function HomePage() {
                 Get Workflow Audit
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
+              <a href={`tel:${sanitizePhone(siteConfig.phone)}`} className="btn-secondary w-full sm:w-auto">
+                Call Now
+                <Phone className="ml-2 h-4 w-4" />
+              </a>
             </div>
           </div>
         </Container>
