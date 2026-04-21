@@ -15,6 +15,7 @@ export const metadata: Metadata = createPageMetadata({
 const sanitizePhone = (phone: string): string => phone.replace(/[^+\d]/g, "");
 const condensedOutcome = (outcome: string): string => outcome.split(",")[0]?.trim() ?? outcome;
 const shorten = (text: string, max = 132): string => (text.length > max ? `${text.slice(0, max).trimEnd()}...` : text);
+const flyerQrHref = "www.steptechinnovation.com";
 
 export default function FlyerPage() {
   return (
@@ -37,8 +38,7 @@ export default function FlyerPage() {
             <div className="core-services-grid mt-3 grid grid-cols-1 gap-3 print:gap-2 sm:grid-cols-2">
               {siteConfig.packages.map((pkg) => (
                 <article key={pkg.name} className="glass-card border-white/20 p-3.5 print:p-2.5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-cyan-200 print:text-[10px]">Starting at {pkg.startingPrice}</p>
-                  <h3 className="mt-1 text-sm font-semibold leading-snug text-white print:text-xs">{pkg.name}</h3>
+                  <h3 className="text-sm font-semibold leading-snug text-white print:text-xs">{pkg.name}</h3>
                   <p className="mt-1 text-[0.95rem] text-slate-300 print:text-[10px]">{shorten(pkg.description, 100)}</p>
                   <ul className="mt-2 space-y-1.5 print:mt-1 print:space-y-1">
                     {pkg.deliverables.slice(0, 3).map((deliverable) => (
@@ -74,6 +74,13 @@ export default function FlyerPage() {
             <p className="mt-1 text-sm text-slate-200 print:text-[10px]">
               Call now for a workflow audit and we will map your highest-impact system upgrade.
             </p>
+            <div className="mt-3 inline-flex items-center gap-3 rounded-lg border border-white/20 bg-slate-900/60 p-2">
+              <img src="/qr/flyer-homepage-qr.png" alt="QR code to open Steptech homepage" className="h-20 w-20 rounded bg-white p-1" />
+              <div className="text-xs leading-tight text-slate-200 print:text-[10px]">
+                <p className="font-semibold text-white">Scan to Open Homepage</p>
+                <p>{flyerQrHref}</p>
+              </div>
+            </div>
             <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-100 print:mt-2 print:gap-x-3 print:gap-y-1 print:text-[10px]">
               <a href={`tel:${sanitizePhone(siteConfig.phone)}`} className="inline-flex items-center gap-2 font-semibold text-white">
                 <Phone className="h-4 w-4 text-cyan-200" />
@@ -106,7 +113,6 @@ export default function FlyerPage() {
               <div className="flyer-print-grid">
                 {siteConfig.packages.map((pkg) => (
                   <article key={`print-${pkg.name}`} className="flyer-print-card">
-                    <p className="flyer-print-price">Starting at {pkg.startingPrice}</p>
                     <h3 className="flyer-print-card-title">{pkg.name}</h3>
                   <p className="flyer-print-copy">{shorten(pkg.description, 120)}</p>
                   <ul className="flyer-print-list flyer-print-checklist">
@@ -145,6 +151,13 @@ export default function FlyerPage() {
             <p className="flyer-print-copy">
               Call now for a workflow audit and we will map your highest-impact system upgrade.
             </p>
+            <div className="mt-2 inline-flex items-center gap-2 rounded border border-slate-300 bg-white/80 p-1.5">
+              <img src="/qr/flyer-homepage-qr.png" alt="QR code to open Steptech homepage" className="h-16 w-16 rounded bg-white p-0.5" />
+              <div className="text-[10px] leading-tight text-slate-700">
+                <p className="font-semibold text-slate-900">Scan for Homepage</p>
+                <p>{flyerQrHref}</p>
+              </div>
+            </div>
             <p className="flyer-print-meta">
               {siteConfig.phone} | {siteConfig.email} | steptechinnovation.com
             </p>

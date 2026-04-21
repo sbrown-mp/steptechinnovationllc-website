@@ -11,7 +11,7 @@ export function Packages() {
       <Container>
         <SectionHeader
           eyebrow="Core service pillars"
-          title="Engineering-led systems with clear starting pricing."
+          title="Engineering-led systems with clear pricing."
           description="Each service includes discovery, implementation, and operational handover to keep delivery measurable and controlled."
           center
         />
@@ -21,8 +21,7 @@ export function Packages() {
             <Reveal key={pkg.name} delay={index * 0.08}>
               <article className="glass-card flex h-full flex-col p-6">
                 <h3 className="text-2xl font-semibold text-white">{pkg.name}</h3>
-                <p className="mt-2 text-lg font-semibold text-cyan-200">Starting at {pkg.startingPrice}</p>
-                <p className="mt-3 text-sm text-slate-200">{pkg.description}</p>
+                <p className="mt-2 text-sm text-slate-200">{pkg.description}</p>
 
                 <ul className="mt-5 space-y-3">
                   {pkg.deliverables.map((deliverable) => (

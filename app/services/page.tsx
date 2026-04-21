@@ -17,7 +17,7 @@ const serviceDetails = [
   {
     title: "Custom Application Development",
     startingPrice: "$15,000",
-    range: "$15,000 - $150,000+ depending on complexity",
+    range: "$5,000 - $150,000+ depending on complexity",
     paragraphs: [
       "We engineer custom software platforms around your exact operational model, not generic templates. This includes secure data architecture, role-based user access, and business logic tailored to how your teams actually execute work.",
       "AI capabilities are integrated where they improve speed and decision quality, while keeping workflows explainable and accountable for leadership and frontline teams.",
@@ -34,7 +34,7 @@ const serviceDetails = [
   {
     title: "SaaS Consolidation & System Replacement",
     startingPrice: "$15,000",
-    range: "$15,000 - $120,000+ depending on scope",
+    range: "$5,000 - $120,000+ depending on scope",
     paragraphs: [
       "When your team is forced to switch between disconnected tools, performance drops and costs rise. We audit your current stack, identify redundancy, and design a unified replacement strategy with clear implementation phases.",
       "The result is fewer subscriptions, cleaner reporting, and a system architecture aligned to operational outcomes instead of vendor feature overlap.",
@@ -68,7 +68,7 @@ const serviceDetails = [
   {
     title: "Hardware-Integrated Systems",
     startingPrice: "$25,000",
-    range: "$25,000 - $150,000+ depending on hardware complexity",
+    range: "$15,000 - $150,000+ depending on hardware complexity",
     paragraphs: [
       "For teams that rely on physical assets, field movement, or device-driven workflows, we engineer hardware-integrated platforms that connect operations in real time. We design the digital and physical layers to work as one accountable system.",
       "This includes selecting integration methods, defining synchronization logic, and building dashboards that turn raw device events into operational control and measurable outcomes.",
@@ -112,9 +112,6 @@ export default function ServicesPage() {
               <article key={service.title} className="glass-card p-7">
                 <h3 className="text-2xl font-semibold text-white">{service.title}</h3>
                 <div className="mt-4 flex flex-wrap gap-3">
-                  <p className="rounded-lg bg-cyan-300/10 px-3 py-2 text-sm font-semibold text-cyan-100">
-                    Starting at {service.startingPrice}
-                  </p>
                   <p className="rounded-lg bg-slate-900/70 px-3 py-2 text-sm text-slate-200">Typical range: {service.range}</p>
                 </div>
                 {service.paragraphs.map((paragraph) => (
